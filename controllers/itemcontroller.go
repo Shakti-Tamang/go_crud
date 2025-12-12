@@ -43,3 +43,12 @@ func CreateItem(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Item created successfully", "item": item})
 
 }
+
+func GetAll(c *gin.Context) {
+	var items []models.Item
+
+	initializers.DB.Find(&items)
+
+	c.JSON(200, gin.H{"message": "Get all itesma ", "items": items})
+
+}

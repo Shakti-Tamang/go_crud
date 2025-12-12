@@ -11,6 +11,7 @@ func ItemsRoutes(r *gin.Engine) {
 	{
 
 		useGroup.POST("", controllers.CreateItem)
+		useGroup.GET("", controllers.GetAll)
 
 	}
 
