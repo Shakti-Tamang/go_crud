@@ -52,3 +52,18 @@ func GetAll(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "Get all itesma ", "items": items})
 
 }
+
+func GetById(c *gin.Context) {
+	id := c.Param("id")
+
+	var bodyData models.Item
+
+	data := initializers.DB.First(&bodyData, id)
+
+	if data.Error != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	c.JSON(200, gin.H{"message": "get item by id", "item": bodyData})
+}
