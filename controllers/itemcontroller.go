@@ -22,6 +22,15 @@ func CreateItem(c *gin.Context) {
 
 	}
 
+	var existing models.Item
+
+	test := initializers.DB.Where("product_name = ?", bodyData.ProductName).First(&existing).Error
+	if test == nil {
+
+		c.JSON(400, gin.H{"error": "Product name already exists"})
+		return
+	}
+
 	item := models.Item{ProductName: bodyData.ProductName, Description: bodyData.Description, Quantity: bodyData.Quantity}
 
 	result := initializers.DB.Create(&item)
