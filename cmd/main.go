@@ -2,17 +2,18 @@ package main
 
 import (
 	"github.com/Shakti-Tamang/crud-app/initializers"
-	"github.com/Shakti-Tamang/crud-app/models"
+	"github.com/Shakti-Tamang/crud-app/routes"
+	"github.com/gin-gonic/gin"
 )
 
 func init() {
 	initializers.ConnectDB()
 	initializers.LoadEnvVariable()
 }
-
 func main() {
-	initializers.DB.AutoMigrate(
-		&models.Item{},
-		&models.UserData{},
-	)
+
+	r := gin.Default()
+	routes.ItemsRoutes(r)
+
+	r.Run()
 }
