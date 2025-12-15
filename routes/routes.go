@@ -9,11 +9,11 @@ func ItemsRoutes(r *gin.Engine) {
 	useGroup := r.Group("/create")
 
 	{
-
 		useGroup.POST("", controllers.CreateItem)
 		useGroup.GET("", controllers.GetAll)
 		useGroup.GET("/:id", controllers.GetById)
-
+		useGroup.DELETE("/:id", controllers.DeleteById)
+		useGroup.PATCH("/:id", controllers.UpdateItemById)
 	}
 
 }
