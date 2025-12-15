@@ -60,10 +60,29 @@ func GetById(c *gin.Context) {
 
 	data := initializers.DB.First(&bodyData, id)
 
-	if data.Error != nil {
+	if data != nil {
 		c.JSON(404, gin.H{"error": "Item not found"})
 		return
 	}
 
 	c.JSON(200, gin.H{"message": "get item by id", "item": bodyData})
+}
+
+func DeleteById(c *gin.Context) {
+
+	id := c.Param("id")
+
+	var bodyData models.Item
+
+	data := initializers.DB.First(&bodyData, id).Error
+
+	if data != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	initializers.DB.Delete(&bodyData)
+
+	c.JSON(200, gin.H{"message": "successfully deleted"})
+
 }
