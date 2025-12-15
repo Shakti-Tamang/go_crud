@@ -86,3 +86,45 @@ func DeleteById(c *gin.Context) {
 	c.JSON(200, gin.H{"message": "successfully deleted"})
 
 }
+
+func UpdateItemById(c *gin.Context) {
+
+	type body struct {
+		ProductName string
+		Description string
+		Quantity    int16
+	}
+
+	var bodyData body
+
+	if err := c.BindJSON(&bodyData); err != nil {
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+
+	}
+
+	id := c.Param("id")
+
+	var data models.Item
+
+	err := initializers.DB.First(&data, id).Error
+
+	if err != nil {
+		c.JSON(404, gin.H{"error": "Item not found"})
+		return
+	}
+
+	if err := initializers.DB.Model(&data).Updates(models.Item{
+		ProductName: bodyData.ProductName,
+		Description: bodyData.Description,
+		Quantity:    bodyData.Quantity,
+	}).Error; err != nil {
+		c.JSON(500, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Item updated successfully",
+		"item":    data,
+	})
+}
